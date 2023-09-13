@@ -5,11 +5,14 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var accountsRouter = require('./routes/accounts');
-var changePasswordRouter = require('./routes/changepassword');
-var transactionHistoryRouter = require('./routes/transactionhistory');
+var customerAccountsRouter = require('./routes/customer/accounts');
+var adminAccountsRouter = require('./routes/admin/accounts');
+var employeeAccountsRouter = require('./routes/employee/accounts');
+var customerChangePasswordRouter = require('./routes/customer/changepassword');
+var adminChangePasswordRouter = require('./routes/admin/changepassword');
+var transactionHistoryRouter = require('./routes/customer/transactionhistory');
 var loginRouter = require('./routes/login');
-var transferRouter = require('./routes/transfer');
+var transferRouter = require('./routes/customer/transfer');
 
 var app = express();
 
@@ -26,11 +29,14 @@ app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-icons')));
 
 app.use('/', indexRouter);
-app.use('/accounts', accountsRouter);
-app.use('/changepassword', changePasswordRouter);
-app.use('/transactionhistory', transactionHistoryRouter);
+app.use('/customer/accounts', customerAccountsRouter);
+app.use('/admin/accounts', adminAccountsRouter);
+app.use('/employee/accounts', employeeAccountsRouter);
+app.use('/customer/changepassword', customerChangePasswordRouter);
+app.use('/admin/changepassword', adminChangePasswordRouter);
+app.use('/customer/transactionhistory', transactionHistoryRouter);
 app.use('/login', loginRouter);
-app.use('/transfer', transferRouter);
+app.use('/customer/transfer', transferRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

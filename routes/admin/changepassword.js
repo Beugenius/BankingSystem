@@ -3,14 +3,14 @@ var router = express.Router();
 
 /* Get */
 router.get("/", (req, res, next) => {
-  console.log("transactionhistory.ejs: inside GET");
-  res.render("transactionhistory", {});
+  console.log("admin/changepassword.ejs: inside GET");
+  res.render("admin/changepassword", {});
 });
 
 /* Post */
 router.post("/", (req, res, next) => {
-  console.log("transactionhistory.ejs: inside POST");
-  res.render("accounts", {});
+  console.log("admin/changepassword.ejs: inside POST");
+  res.render("admin/accounts", {});
 });
 
 module.exports = router;
