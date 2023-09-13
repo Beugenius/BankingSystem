@@ -1,13 +1,56 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <%- include('../views/partial/meta'); %>
     <title>Transfer</title>
     <%- include('../views/partial/stylesheets'); %>
   </head>
   <body>
-    <header>
-      <%- include('../views/partial/nav'); %>
-    </header>
-    
+    <header><%- include('../views/partial/nav'); %></header>
+    <div class="container-fluid vh-100" style="margin-top: 10px">
+      <div class="" style="margin-top: 100px">
+        <div class="rounded d-flex justify-content-center">
+          <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+            <div class="text-center">
+              <h3 class="text-primary">Make a Transfer</h3>
+            </div>
+            <form method="post">
+              <div class="p-4">
+                <div class="input-group mb-3">
+                  <span class="input-group-text bg-primary col-md-5">
+                    <label for="accounts" class="text-white">
+                      Transfer From
+                    </label>
+                  </span>
+                  <select name="accounts" class="form-control">
+                    <option>Checking ($9,999.00)</option>
+                    <option>Savings ($10,000.01)</option>
+                  </select>
+                </div>
+                <div class="input-group mb-3">
+                  <span class="input-group-text bg-primary col-md-5">
+                    <label for="amount" class="text-white">
+                      Amount <span class="mr-0 ml-auto pr-0">$</span>
+                    </label>
+                  </span>
+                  <input
+                    type="number"
+                    name="amount"
+                    step="0.01"
+                    min="0.50"
+                    value="25.00"
+                  />
+                </div>
+                <div class="">
+                    <button class="btn btn-primary mt-2" style="float:right;" type="submit">
+                      Transfer
+                    </button>
+                  </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
