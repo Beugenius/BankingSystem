@@ -7,7 +7,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var accountsRouter = require('./routes/accounts');
 var changePasswordRouter = require('./routes/changepassword');
-var historyRouter = require('./routes/history');
+var transactionHistoryRouter = require('./routes/transactionhistory');
 var loginRouter = require('./routes/login');
 var transferRouter = require('./routes/transfer');
 
@@ -22,11 +22,12 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
 
 app.use('/', indexRouter);
 app.use('/accounts', accountsRouter);
 app.use('/changepassword', changePasswordRouter);
-app.use('/history', historyRouter);
+app.use('/transactionhistory', transactionHistoryRouter);
 app.use('/login', loginRouter);
 app.use('/transfer', transferRouter);
 
