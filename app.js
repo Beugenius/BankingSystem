@@ -15,6 +15,7 @@ var adminChangePasswordRouter = require('./routes/admin/changepassword');
 var transactionHistoryRouter = require('./routes/customer/transactionhistory');
 var loginRouter = require('./routes/login');
 var transferRouter = require('./routes/customer/transfer');
+var accountsRouter = require('./routes/accounts');
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap/dist/')));
 app.use(express.static(path.join(__dirname, 'node_modules/bootstrap-icons')));
+app.use(express.static(path.join(__dirname, "node_modules/crypto-js/")));
 
 // this will setup the database if it doesn't already exist
 var dbCon = require("./lib/database");
@@ -64,6 +66,7 @@ app.use('/admin/changepassword', adminChangePasswordRouter);
 app.use('/customer/transactionhistory', transactionHistoryRouter);
 app.use('/login', loginRouter);
 app.use('/customer/transfer', transferRouter);
+app.use('/accounts', accountsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

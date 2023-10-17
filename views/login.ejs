@@ -1,59 +1,128 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <%- include('../views/partial/meta'); %>
-    <title>Login</title>
-    <%- include('../views/partial/stylesheets'); %>
-  </head>
-  <body>
-    <header><%- include('../views/partial/nav'); %></header>
-    <div class="container-fluid vh-100" style="margin-top: 10px">
-      <div class="" style="margin-top: 100px">
-        <div class="rounded d-flex justify-content-center">
-          <div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
-            <div class="text-center">
-              <h3 class="text-primary">Log In</h3>
-            </div>
-            <form method="post">
-              <div class="p-4">
-                <!--User Name-->
-                <div class="input-group mb-3">
-                  <span class="input-group-text bg-primary">
-                    <i class="bi bi-person-plus-fill text-white"></i>
-                  </span>
-                  <input
-                    id="username"
-                    name="username"
-                    type="text"
-                    class="form-control"
-                    autofocus="autofocus"
-                    placeholder="Username"
-                  />
-                </div>
-                <!--Password-->
-                <div class="input-group mb-3">
-                  <span class="input-group-text bg-primary"
-                    ><i class="bi bi-key-fill text-white"></i
-                  ></span>
-                  <input
-                    id="password1"
-                    type="password"
-                    class="form-control"
-                    placeholder="Enter password"
-                  />
-                </div>
-                <input type="hidden" id="hash" name="hash" />
-                <input type="hidden" id="salt" name="salt" />
-                <div class="text-center">
-                  <button class="btn btn-primary mt-2" type="submit">
-                    Log In
-                  </button>
-                </div>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </body>
+	<head>
+		<%- include('../views/partial/meta'); %>
+		<title>Login</title>
+		<%- include('../views/partial/stylesheets'); %>
+		<script type="text/javascript" src="crypto-js.js"></script>
+		<script>
+			function triggerPostIfSaltNotExist(event) {
+				let salt = document.getElementById("salt").value;
+				if (salt == "") {
+					document.getElementById("loginButton").click();
+				} else {
+					event.preventDefault();
+				}
+			}
+			function checkIfTab(e) {
+				if (e.keyCode == 9) {
+					let salt = document.getElementById("salt").value;
+					if (salt == "") {
+						document.getElementById("loginButton").click();
+					}
+				}
+			}
+			function checkPassword(event) {
+				const password = document.getElementById("password").value;
+				const email = document.getElementById("email").value;
+				const salt = document.getElementById("salt").value;
+				if (password == "" || email == "" || salt == "") {
+					// nothing, don't hash the password
+				} else {
+					// put the hashed password in the dom so it can be posted
+					var hashedPassword = CryptoJS.SHA256(password + ":" + salt).toString(
+						CryptoJS.enc.Hex
+					);
+					document.getElementById("hash").value = hashedPassword;
+					// post will occur now
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<header><%- include('../views/partial/nav'); %></header>
+		<div class="container-fluid vh-100" style="margin-top: 10px">
+			<div class="" style="margin-top: 100px">
+				<div class="rounded d-flex justify-content-center">
+					<div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+						<div class="text-center">
+							<h3 class="text-primary">Log In</h3>
+						</div>
+						<form method="post" onsubmit="return checkPassword(event);">
+							<div class="p-4">
+								<!--Email-->
+								<div class="input-group mb-3">
+									<span class="input-group-text bg-primary">
+										<i class="bi bi-person-plus-fill text-white"></i>
+									</span>
+									<% if(emailFocus) { %>
+									<input
+										id="email"
+										name="email"
+										type="email"
+										class="form-control"
+										autofocus="autofocus"
+										placeholder="Email"
+										onkeydown="checkIfTab(event)"
+										value="<%- locals.email %>" />
+									<% } else {%>
+									<input
+										id="email"
+										name="email"
+										type="email"
+										class="form-control"
+										placeholder="Email"
+										onkeydown="checkIfTab(event)"
+										value="<%- locals.email %>" />
+									<% } %>
+								</div>
+								<div>
+									<p id="message" class="text-danger"><%- locals.message %></p>
+								</div>
+								<!--Password-->
+								<div class="input-group mb-3">
+									<span class="input-group-text bg-primary"
+										><i class="bi bi-key-fill text-white"></i
+									></span>
+									<% if(passwordFocus){ %>
+									<input
+										onclick="triggerPostIfSaltNotExist(event)"
+										id="password"
+										type="password"
+										class="form-control"
+										autofocus="autofocus"
+										placeholder="Enter password" />
+									<% } else { %>
+									<input
+										onclick="triggerPostIfSaltNotExist(event)"
+										id="password"
+										type="password"
+										class="form-control"
+										placeholder="Enter password" />
+									<% } %>
+								</div>
+                <div>
+									<p id="message" class="text-danger"><%- locals.passwordMessage %></p>
+								</div>
+								<input type="hidden" id="hash" name="hash" />
+								<input
+									type="hidden"
+									id="salt"
+									name="salt"
+									value="<%- locals.salt %>" />
+								<div class="text-center">
+									<button
+										id="loginButton"
+										class="btn btn-primary mt-2"
+										type="submit">
+										Log In
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
 </html>
