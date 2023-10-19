@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<%- include('../views/partial/meta'); %>
+		<title>Signup</title>
+		<%- include('../views/partial/stylesheets'); %>
+		<script>
+			function formatSocial(event) {
+				if (event.key !== "Backspace" && event.key !== "Tab" && event.key !== "Control") {
+					if (
+						(event.keyCode >= 48 && event.keyCode <= 57) ||
+						(event.keyCode >= 96 && event.keyCode <= 105)
+					) {
+						let ssnInput = document.getElementById("ssn");
+						if (ssnInput.value.length == 3) {
+							ssnInput.value = ssnInput.value + "-";
+						} else if (ssnInput.value.length == 6) {
+							ssnInput.value = ssnInput.value + "-";
+						}
+					} else {
+						event.preventDefault();
+					}
+				}
+			}
+			function validateUserEntry(event) {
+				const password1 = document.getElementById("password1").value;
+				const password2 = document.getElementById("password2").value;
+				const date = document.getElementById("dob").value;
+				const dateDiv = document.getElementById("dateMessageDiv");
+				var todaysDate = new Date();
+				let minDate =
+					todaysDate.getFullYear() -
+					18 +
+					"-" +
+					(todaysDate.getMonth() + 1) +
+					"-" +
+					todaysDate.getDate();
+				let maxDate =
+					todaysDate.getFullYear() -
+					116 +
+					"-" +
+					(todaysDate.getMonth() + 1) +
+					"-" +
+					todaysDate.getDate();
+				let dateValid = false;
+				let dateMessage = "Please enter a valid date";
+				if (minDate > date && date > maxDate) {
+					dateValid = true;
+					dateMessage = "";
+				}
+				let passwordValid = false;
+				let message = "";
+				if (password1 == "") {
+					message = "Please enter password";
+				} else if (password2 == "") {
+					message = "Please re-enter password";
+				} else if (password1 != password2) {
+					message = "Passwords didn't match";
+				} else {
+					passwordValid = true;
+				}
+				if (!passwordValid || !dateValid) {
+					event.preventDefault();
+					if (!dateValid) {
+						dateDiv.style.display = "block";
+						document.getElementById("dateMessage").innerHTML = dateMessage;
+					} else {
+						dateDiv.style.display = "none";
+					}
+					if (!passwordValid) {
+						document.getElementById("message").innerHTML = message;
+					}
+				} else {
+					let salt = CryptoJS.lib.WordArray.random(8);
+					document.getElementById("salt").value = salt;
+					let hashed = CryptoJS.SHA256(password1 + ":" + salt).toString(CryptoJS.enc.hex);
+					document.getElementById("hash").value = hashed;
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<header><%- include('../views/partial/nav'); %></header>
+		<div class="container-fluid vh-100" style="margin-top: 10px">
+			<div class="" style="margin-top: 100px">
+				<div class="rounded d-flex justify-content-center">
+					<div class="col-md-4 col-sm-12 shadow-lg p-5 bg-light">
+						<div class="text-center">
+							<h3 class="text-primary">Register New Account</h3>
+						</div>
+						<form onSubmit="return validateUserEntry(event);" method="post">
+							<div class="p-4">
+								<!--Enter the users first name -->
+								<div class="input-group mb-3">
+									<div class="col">
+										<label class="label rounded col-form-label" for="firstName">First name </label>
+									</div>
+									<div class="col-md-auto">
+										<input
+											id="firstName"
+											name="firstName"
+											type="text"
+											class="form-control"
+											placeholder="First name"
+											value="<%- locals.firstName %>"
+											required />
+									</div>
+								</div>
+								<!--Enter the users last name -->
+								<div class="input-group mb-3">
+									<div class="col">
+										<label class="label rounded col-form-label" for="lastName">Last name </label>
+									</div>
+									<div class="col-md-auto">
+										<input
+											id="lastName"
+											name="lastName"
+											type="text"
+											class="form-control"
+											placeholder="Last name"
+											value="<%- locals.lastName %>"
+											required />
+									</div>
+								</div>
+								<!--Enter the users email-->
+								<div class="input-group mb-3">
+									<div class="col">
+										<label class="label rounded col-form-label" for="email">Email </label>
+									</div>
+									<div class="col-md-auto">
+										<input
+											id="email"
+											name="email"
+											type="email"
+											class="form-control"
+											placeholder="Enter your email"
+											value="<%- locals.email %>"
+											required />
+									</div>
+								</div>
+								<% if(locals.emailAlreadyInUse) {%>
+								<div>
+									<p class="text-danger" style="height: 25px">Email is already in use</p>
+								</div>
+								<% } %>
+								<!--Enter the users DOB-->
+								<div class="input-group mb-3">
+									<div class="col">
+										<label class="label rounded col-form-label" for="dob">Date of birth </label>
+									</div>
+									<div class="col-md-auto">
+										<input
+											id="dob"
+											name="dob"
+											type="date"
+											class="form-control"
+											value="<%- locals.dob %>"
+											required />
+									</div>
+								</div>
+								<div id="dateMessageDiv" style="display: none">
+									<p id="dateMessage" class="text-danger" style="height: 25px">
+										<%- locals.dateMessage %>
+									</p>
+								</div>
+								<!--SSN-->
+								<div class="input-group mb-3">
+									<div class="col">
+										<label class="label rounded col-form-label" for="ssn">Social Security</label>
+									</div>
+									<div class="col-md-auto">
+										<input
+											id="ssn"
+											name="ssn"
+											type="text"
+											class="form-control"
+											placeholder="Social security number"
+											maxlength="11"
+											minlength="11"
+											onkeydown="formatSocial(event)"
+											required />
+									</div>
+								</div>
+								<% if(locals.ssnAlreadyInUse) { %>
+								<div>
+									<p class="text-danger" style="height: 25px">
+										SSN associated with existing account
+									</p>
+								</div>
+								<% } %>
+								<!--Password-->
+								<div class="input-group mb-3">
+									<span class="input-group-text bg-primary"
+										><i class="bi bi-key-fill text-white"></i
+									></span>
+									<input
+										id="password1"
+										type="password"
+										class="form-control"
+										placeholder="Password"
+										required />
+								</div>
+								<!--Confirm Password-->
+								<div class="input-group mb-3">
+									<span class="input-group-text bg-primary"
+										><i class="bi bi-key-fill text-white"></i
+									></span>
+									<input
+										id="password2"
+										type="password"
+										class="form-control"
+										placeholder="Re-enter Password"
+										required />
+								</div>
+								<div>
+									<p id="message" class="text-danger" style="height: 25px"><%- locals.message %></p>
+								</div>
+								<input type="hidden" id="hash" name="hash" />
+								<input type="hidden" id="salt" name="salt" />
+								<div class="text-center">
+									<button class="btn btn-primary mt-2" type="submit">Create Account</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

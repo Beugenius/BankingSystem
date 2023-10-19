@@ -16,7 +16,7 @@ var transactionHistoryRouter = require('./routes/customer/transactionhistory');
 var loginRouter = require('./routes/login');
 var transferRouter = require('./routes/customer/transfer');
 var accountsRouter = require('./routes/accounts');
-
+var signupRouter = require('./routes/signup');
 var app = express();
 
 // view engine setup
@@ -67,6 +67,7 @@ app.use('/customer/transactionhistory', transactionHistoryRouter);
 app.use('/login', loginRouter);
 app.use('/customer/transfer', transferRouter);
 app.use('/accounts', accountsRouter);
+app.use('/signup', signupRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

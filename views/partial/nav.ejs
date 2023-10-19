@@ -16,7 +16,9 @@
 			<li class="nav-item">
 				<a class="nav-link" href="/login">Login</a>
 			</li>
-    </ul>
+			<li class="nav-item">
+				<a class="nav-link" href="/signup">Sign up</a>
+			</li>
 			<% } else { %>
 			<li class="nav-item active">
 				<a class="nav-link" href="/accounts">Accounts</a>
@@ -27,8 +29,12 @@
 			<li class="nav-item">
 				<a href="/logout" class="nav-link">Logout</a>
 			</li>
-    </ul>
-    <span style="margin-right: 1vw; margin-left:auto;">Welcome, <%- locals.session.username %>!</span>
 			<% } %>
+		</ul>
+		<% if(locals.session.loggedIn) {%>
+		<span style="margin-right: 1vw; margin-left: auto">
+			Welcome, <%- locals.session.username %>!
+		</span>
+		<% } %>
 	</div>
 </nav>
