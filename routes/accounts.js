@@ -3,6 +3,7 @@ var router = express.Router();
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
+	console.log("accounts.js: Inside of GET");
 	if (req.session.loggedIn) {
         console.log(req.session.roleId);
 		if (req.session.roleId == 1) {
