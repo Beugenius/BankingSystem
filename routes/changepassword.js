@@ -13,14 +13,14 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
 	console.log("changepassword.ejs: inside POST");
 	let hash = req.body.hash;
-  let currentHash = req.body.currentHash; 
+	let currentHash = req.body.currentHash;
 	let userId = await db.GetUserIdByEmail(req.session.email);
 	let authenticated = await db.AuthenticateUserByIdAndHashedPassword(userId, currentHash);
 	if (authenticated) {
-    await db.ChangeUserHashedPasswordById(userId, hash);
-    res.redirect("accounts");
+		await db.ChangeUserHashedPasswordById(userId, hash);
+		res.redirect("accounts");
 	} else {
-    res.render("changepassword", {passwordMessage: "Incorrect password"});
+		res.render("changepassword", { passwordMessage: "Incorrect password" });
 	}
 });
 

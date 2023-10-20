@@ -16,10 +16,7 @@ router.post("/", async (req, res, next) => {
 		const email = req.body.email;
 		const hash = req.body.hash;
 		var userId = await db.GetUserIdByEmail(email);
-		console.log("User ID: " + userId);
-		console.log(hash);
 		let authenticated = await db.AuthenticateUserByIdAndHashedPassword(userId, hash);
-		console.log("Authenticated: " + authenticated);
 		if (authenticated == true) {
 			var userInfo = await db.GetUserDataByEmail(email);
 			req.session.roleId = userInfo.role_id;
@@ -30,7 +27,6 @@ router.post("/", async (req, res, next) => {
 				if (error) {
 					throw error;
 				}
-				console.log("Inside session save with email value of: " + req.session.email);
 				res.redirect("accounts");
 			});
 		} else {
