@@ -9,7 +9,6 @@ router.get('/', async (req, res, next) => {
   if(req.session.loggedIn) {
   // get accounts associated with user 
   var userAccounts = await db.GetUserAccountsByUserId(req.session.userId); 
-  console.log(userAccounts);
   let totalBalance = 0;
   userAccounts.forEach(element => {
     let elementBalance = parseFloat(element.balance); 

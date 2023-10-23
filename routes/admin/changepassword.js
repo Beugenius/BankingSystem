@@ -7,7 +7,7 @@ router.get("/", async (req, res, next) => {
 	if (req.session.roleId !== 1 || req.session.roleId == undefined || req.session.roleId == null) {
 		res.redirect("/");
 	} else {
-		const userId = req.session.userIdToChange;
+		const userId = req.session.customerAccountId;
 		if (userId == null || userId == undefined) {
 			res.redirect("accounts");
 		} else {
@@ -22,11 +22,11 @@ router.get("/", async (req, res, next) => {
 router.post("/", async (req, res, next) => {
 	console.log("admin/changepassword.ejs: inside POST");
 	const hash = req.body.hash;
-	const userId = req.session.userIdToChange;
+	const userId = req.session.customerAccountId;
 	if (hash) {
 		let passwordChangedSuccessfully = await db.ChangeUserHashedPasswordById(userId, hash);
 		if (passwordChangedSuccessfully) {
-			req.session.userIdToChange = null;
+			req.session.customerAccountId = null;
 			req.session.passwordChangeSuccessMessage = "Password updated successfully!";
 			req.session.passwordFailMessage = null;
 			req.session.save(error => {

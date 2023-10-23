@@ -17,6 +17,9 @@ var loginRouter = require('./routes/login');
 var transferRouter = require('./routes/customer/transfer');
 var accountsRouter = require('./routes/accounts');
 var signupRouter = require('./routes/signup');
+var customerDepositRouter = require('./routes/customer/deposit');
+var adminViewFinancesRouter = require('./routes/admin/viewfinances');
+var adminDepositRouter = require('./routes/admin/deposit');
 var app = express();
 
 // view engine setup
@@ -68,6 +71,9 @@ app.use('/login', loginRouter);
 app.use('/customer/transfer', transferRouter);
 app.use('/accounts', accountsRouter);
 app.use('/signup', signupRouter);
+app.use('/customer/deposit', customerDepositRouter);
+app.use('/admin/viewfinances', adminViewFinancesRouter);
+app.use('/admin/deposit', adminDepositRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

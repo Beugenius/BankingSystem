@@ -12,7 +12,7 @@ router.get("/", async (req, res, next) => {
 		accountsObj = { usersList, passwordChangeSuccessMessage: passwordChangeSuccessMessage };
 		req.session.passwordChangeSuccessMessage = null;
 	} else {
-    accountsObj = { usersList};
+		accountsObj = { usersList };
 	}
 	res.render("admin/accounts", accountsObj);
 });
@@ -22,7 +22,7 @@ router.post("/", (req, res, next) => {
 	let userIdForPassword = req.body.userIdForPassword;
 	let userIdForFinances = req.body.userIdForFinances;
 	if (userIdForPassword) {
-		req.session.userIdToChange = userIdForPassword;
+		req.session.customerAccountId = userIdForPassword;
 		req.session.save(error => {
 			if (error) {
 				throw error;
@@ -30,11 +30,17 @@ router.post("/", (req, res, next) => {
 		});
 		res.redirect("/admin/changepassword");
 	} else if (userIdForFinances) {
+		req.session.customerAccountId = userIdForFinances;
+		req.session.save(error => {
+			if (error) {
+				throw error;
+			}
+		});
 		// load finances page
-    // TODO ROUTE TO FINANCES
-    res.redirect("/");
+		res.redirect("/admin/viewfinances");
 	} else {
-    res.redirect("accounts");
+		console.log("NOT WORKING?");
+		res.redirect("accounts");
 	}
 });
 
