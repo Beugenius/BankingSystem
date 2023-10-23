@@ -33,6 +33,9 @@ router.post("/", async (req, res, next) => {
 		if (userCreated) {
 			// log user in
 			var userInfo = await db.GetUserDataByEmail(email);
+			// create default empty checking and savings account
+			await db.CreateAccountsForNewUser(userInfo.user_id);
+			req.session.userId = userInfo.user_id;
 			req.session.roleId = userInfo.role_id;
 			req.session.username = userInfo.first_name;
 			req.session.loggedIn = true;

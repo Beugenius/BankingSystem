@@ -19,6 +19,7 @@ router.post("/", async (req, res, next) => {
 		let authenticated = await db.AuthenticateUserByIdAndHashedPassword(userId, hash);
 		if (authenticated == true) {
 			var userInfo = await db.GetUserDataByEmail(email);
+			req.session.userId = userInfo.user_id;
 			req.session.roleId = userInfo.role_id;
 			req.session.username = userInfo.first_name;
 			req.session.loggedIn = true;
