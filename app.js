@@ -22,6 +22,10 @@ var adminViewFinancesRouter = require('./routes/admin/viewfinances');
 var adminDepositRouter = require('./routes/admin/deposit');
 var adminTransferRouter = require('./routes/admin/transfer');
 var adminTransactionHistoryRouter = require('./routes/admin/transactionhistory');
+var employeeViewFinancesRouter = require('./routes/employee/viewfinances');
+var employeeDepositRouter = require('./routes/employee/deposit');
+var employeeTransferRouter = require('./routes/employee/transfer');
+var employeeTransactionHistoryRouter = require('./routes/employee/transactionhistory');
 var app = express();
 
 // view engine setup
@@ -78,6 +82,10 @@ app.use('/admin/viewfinances', adminViewFinancesRouter);
 app.use('/admin/deposit', adminDepositRouter);
 app.use('/admin/transfer', adminTransferRouter);
 app.use('/admin/transactionhistory', adminTransactionHistoryRouter);
+app.use('/employee/viewfinances', employeeViewFinancesRouter);
+app.use('/employee/deposit', employeeDepositRouter);
+app.use('/employee/transfer', employeeTransferRouter);
+app.use('/employee/transactionhistory', employeeTransactionHistoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

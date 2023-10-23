@@ -7,7 +7,7 @@ router.get("/", async (req, res, next) => {
 	console.log("admin/accounts.ejs: inside GET");
 	// get all users
 	let passwordChangeSuccessMessage = req.session.passwordChangeSuccessMessage;
-	let usersList = await db.GetAllUserData();
+	let usersList = await db.GetAllUserData(1);
 	if (passwordChangeSuccessMessage !== null && passwordChangeSuccessMessage !== undefined) {
 		accountsObj = { usersList, passwordChangeSuccessMessage: passwordChangeSuccessMessage };
 		req.session.passwordChangeSuccessMessage = null;
@@ -39,7 +39,6 @@ router.post("/", (req, res, next) => {
 		// load finances page
 		res.redirect("/admin/viewfinances");
 	} else {
-		console.log("NOT WORKING?");
 		res.redirect("accounts");
 	}
 });

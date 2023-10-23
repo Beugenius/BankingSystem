@@ -5,10 +5,10 @@ var db = require("../../lib/database");
 /* Get */
 router.get("/", async (req, res, next) => {
 	console.log("transfer.ejs: inside GET");
-	if (req.session.roleId == 1) {
+	if (req.session.roleId == 3) {
 		var userAccounts = await db.GetUserAccountsByUserId(req.session.customerAccountId);
 		console.log(userAccounts);
-		res.render("admin/transfer", { userAccounts });
+		res.render("employee/transfer", { userAccounts });
 	} else {
 		res.redirect("/accounts");
 	}
@@ -23,6 +23,7 @@ router.post("/", async (req, res, next) => {
 	let amount = req.body.amount;
 	let memo = req.body.memo;
 	let fromAccountHasEnoughFunds = await db.AccountHasEnoughToTransfer(amount, fromAccountNumber);
+  console.log(fromAccountHasEnoughFunds); 
 	if (fromAccountHasEnoughFunds) {
 		let transferSuccess = await db.TransferBetweenAccounts(
 			fromAccountNumber,
@@ -34,11 +35,11 @@ router.post("/", async (req, res, next) => {
 			res.redirect("/accounts");
 		} else {
 			var userAccounts = await db.GetUserAccountsByUserId(req.session.customerAccountId);
-			res.render("admin/transfer", { userAccounts, errorMessage: "Error processing transfer" });
+			res.render("employee/transfer", { userAccounts, errorMessage: "Error processing transfer" });
 		}
 	} else {
 		var userAccounts = await db.GetUserAccountsByUserId(req.session.customerAccountId);
-		res.render("admin/transfer", { userAccounts, errorMessage: "Insufficient funds" });
+		res.render("employee/transfer", { userAccounts, errorMessage: "Insufficient funds" });
 	}
 });
 

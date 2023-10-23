@@ -68,7 +68,10 @@
 											</form>
 										</td>
 										<td>
-											<form method="post" onsubmit="return setUserId(<%- locals.usersList[i].user_id%>, 'finances')">
+											<% if(locals.usersList[i].role_id == 2) { %>
+											<form
+												method="post"
+												onsubmit="return setUserId(<%- locals.usersList[i].user_id%>, 'finances')">
 												<div class="text-center">
 													<button action="" class="btn btn-primary mt-2" type="submit">
 														View Finances
@@ -79,6 +82,7 @@
 													id="userIdForFinances-<%- locals.usersList[i].user_id %>"
 													name="userIdForFinances" />
 											</form>
+											<% } %>
 										</td>
 									</tr>
 
